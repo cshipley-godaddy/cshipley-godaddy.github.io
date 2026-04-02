@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Week Contest Hub</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f4f0; color: #1a1a18; min-height: 100vh; }
+  input, select, button { font-family: inherit; }
+  select { appearance: none; -webkit-appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 28px !important; }
+  :root {
+    --bg: #ffffff; --bg2: #f5f4f0; --bg3: #eeedea;
+    --text: #1a1a18; --text2: #5f5e5a; --text3: #9a9893;
+    --border: rgba(0,0,0,0.1); --border2: rgba(0,0,0,0.18);
+    --blue: #185FA5; --blue-bg: #e6f1fb; --blue-text: #0c447c;
+    --green: #0f6e56; --green-bg: #e1f5ee; --green-text: #085041;
+    --amber: #854f0b; --amber-bg: #faeeda; --amber-text: #633806;
+    --purple: #534ab7; --purple-bg: #eeedfe; --purple-text: #3c3489;
+    --coral: #993c1d; --coral-bg: #faece7; --coral-text: #712b13;
+    --pink: #993556; --pink-bg: #fbeaf0; --pink-text: #72243e;
+    --gray: #5f5e5a; --gray-bg: #f1efe8; --gray-text: #444441;
+    --radius: 8px; --radius-lg: 12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c; --bg2: #171715; --bg3: #2a2a28;
+      --text: #f0efe8; --text2: #b4b2a9; --text3: #6a6966;
+      --border: rgba(255,255,255,0.1); --border2: rgba(255,255,255,0.18);
+      --blue: #85b7eb; --blue-bg: #0c2a4a; --blue-text: #b5d4f4;
+      --green: #5dcaa5; --green-bg: #04342c; --green-text: #9fe1cb;
+      --amber: #ef9f27; --amber-bg: #412402; --amber-text: #fac775;
+      --purple: #afa9ec; --purple-bg: #26215c; --purple-text: #cecbf6;
+      --coral: #f0997b; --coral-bg: #4a1b0c; --coral-text: #f5c4b3;
+      --pink: #ed93b1; --pink-bg: #4b1528; --pink-text: #f4c0d1;
+      --gray: #b4b2a9; --gray-bg: #2c2c2a; --gray-text: #d3d1c7;
+    }
+    body { background: var(--bg2); color: var(--text); }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState } = React;
+
+const DAYS = ["Mon","Tue","Wed","Thu","Fri"];
+
+const CHALLENGES = [
+  { day:"Monday", title:"The Refactor Sprint", time:"15 min", prompt:"Pick a messy function from your codebase. Set a 15-minute timer. Use Claude Code to refactor it for readability and performance, and add JSDoc. Post your before/after diff in the Slack thread.", scoring:"10 pts base. +5 bonus if it also generates passing tests.", tip:"Drop the whole file — let Claude find the worst offender." },
+  { day:"Tuesday", title:"The Bug Hunt", time:"10 min", prompt:"Paste a broken snippet or failing test into Claude Code. Set a 10-minute timer. Get it working and post your solution + a one-line explanation of the root cause.", scoring:"10 pts base. +5 bonus if Claude's root cause explanation is clear enough to put in a PR comment.", tip:"Try asking Claude to explain *why* before asking it to fix." },
+  { day:"Wednesday", title:"The Docs Writer", time:"10 min", prompt:"Pick any undocumented function or module. Set a 10-minute timer. Use Claude Code to generate a README section or inline docs. Post the output.", scoring:"10 pts base. +5 bonus if it includes a working usage example.", tip:"Tell Claude who the audience is — 'write this for a new engineer joining the team.'" },
+  { day:"Thursday", title:"The CLI Wizard", time:"20 min", prompt:"Build a small CLI tool or script using Claude Code — anything that saves you or your team real time. Set a 20-minute timer. It must run. Share what it does and show it working.", scoring:"10 pts base. +5 bonus for creative or novel use of Claude Code slash commands.", tip:"Start with 'I want a script that...' and iterate from there." },
+  { day:"Friday", title:"The Prompt Surgeon", time:"15 min", prompt:"Find a prompt that gave you a bad or mediocre result this week. Set a 15-minute timer and iterate on it live until Claude Code nails it. Document every iteration. Post the full arc.", scoring:"10 pts base. +5 bonus if the final result is genuinely impressive.", tip:"The messier your starting prompt, the better the story." },
+];
+
+const AWARDS = [
+  { id:"elegant", label:"Most Elegant Prompt", icon:"✦", c:"--purple", desc:"Clean, precise, gets it right first try" },
+  { id:"unexpected", label:"Most Unexpected Use", icon:"◈", c:"--green", desc:"Nobody saw that coming" },
+  { id:"timesaved", label:"Most Time Saved", icon:"◷", c:"--blue", desc:"Biggest productivity unlock" },
+  { id:"creative", label:"Most Creative Build", icon:"◆", c:"--coral", desc:"Best Build-Off Finals project" },
+  { id:"mvp", label:"Claude Week MVP", icon:"★", c:"--amber", desc:"Overall top performer on the leaderboard" },
+  { id:"glow", label:"Glow Up Award", icon:"↑", c:"--green", desc:"Most improved from day 1 to day 5" },
+  { id:"promptist", label:"The Promptist", icon:"⌘", c:"--purple", desc:"Consistently best prompting craft all week" },
+  { id:"shipped", label:"Showed Up & Shipped", icon:"◉", c:"--gray", desc:"Completed every daily challenge" },
+];
+
+const INIT_PLAYERS = ["Alex","Jordan","Sam","Riley","Morgan"].map(name=>({
+  name, points:{Mon:0,Tue:0,Wed:0,Thu:0,Fri:0}
+}));
+
+const PTS = [0,5,10,15];
+
+const css = {
+  wrap: { maxWidth:780, margin:"0 auto", padding:"1.5rem 1rem 3rem" },
+  h1: { fontSize:22, fontWeight:500, marginBottom:4 },
+  sub: { fontSize:13, color:"var(--text2)", marginBottom:"1.25rem" },
+  tabs: { display:"flex", gap:8, marginBottom:"1.5rem", flexWrap:"wrap" },
+  tab: a=>({ padding:"6px 14px", fontSize:13, fontWeight:500, borderRadius:"var(--radius)",
+    border:"0.5px solid var(--border2)", cursor:"pointer",
+    background: a?"var(--blue-bg)":"var(--bg)", color: a?"var(--blue-text)":"var(--text2)" }),
+  card: { background:"var(--bg)", border:"0.5px solid var(--border)", borderRadius:"var(--radius-lg)", padding:"1rem 1.25rem", marginBottom:"1rem" },
+  card2: { background:"var(--bg3)", border:"0.5px solid var(--border)", borderRadius:"var(--radius-lg)", padding:"1rem 1.25rem", marginBottom:"1rem" },
+  label: { fontSize:11, color:"var(--text3)", marginBottom:4, display:"block" },
+  badge: (bg,col)=>({ background:`var(${bg})`, color:`var(${col})`, fontSize:11, fontWeight:500, padding:"2px 8px", borderRadius:"var(--radius)", display:"inline-block", whiteSpace:"nowrap" }),
+  btn: { padding:"6px 14px", fontSize:13, borderRadius:"var(--radius)", border:"0.5px solid var(--border2)", cursor:"pointer", background:"var(--bg)", color:"var(--text)" },
+  input: { padding:"6px 10px", fontSize:13, borderRadius:"var(--radius)", border:"0.5px solid var(--border2)", background:"var(--bg3)", color:"var(--text)", outline:"none", width:"100%" },
+  th: { fontSize:12, color:"var(--text2)", fontWeight:500, padding:"6px 10px", textAlign:"left", borderBottom:"0.5px solid var(--border)" },
+  td: { padding:"8px 10px", fontSize:14, borderBottom:"0.5px solid var(--border)" },
+};
+
+function App() {
+  const [tab, setTab] = useState("leaderboard");
+  const [players, setPlayers] = useState(INIT_PLAYERS);
+  const [newName, setNewName] = useState("");
+  const [winners, setWinners] = useState({});
+  const [chalDay, setChalDay] = useState(0);
+  const [editing, setEditing] = useState(null);
+
+  const total = p => Object.values(p.points).reduce((a,b)=>a+b,0);
+  const sorted = [...players].sort((a,b)=>total(b)-total(a));
+  const rank = i => ["🥇","🥈","🥉"][i] ?? `${i+1}.`;
+
+  const setpts = (name, day, val) => {
+    setPlayers(prev=>prev.map(p=>p.name===name?{...p,points:{...p.points,[day]:val}}:p));
+    setEditing(null);
+  };
+  const addPlayer = () => {
+    const n = newName.trim();
+    if (!n || players.find(p=>p.name===n)) return;
+    setPlayers(prev=>[...prev,{name:n,points:{Mon:0,Tue:0,Wed:0,Thu:0,Fri:0}}]);
+    setNewName("");
+  };
+  const remove = name => setPlayers(prev=>prev.filter(p=>p.name!==name));
+
+  const TABS = [{id:"leaderboard",label:"Leaderboard"},{id:"challenges",label:"Daily Challenges"},{id:"awards",label:"Best Prompt Awards"},{id:"buildoff",label:"Build-Off Finals"}];
+
+  return (
+    <div style={css.wrap}>
+      <p style={css.h1}>Claude Week</p>
+      <p style={css.sub}>Contest hub — admin view</p>
+      <div style={css.tabs}>
+        {TABS.map(t=><button key={t.id} style={css.tab(tab===t.id)} onClick={()=>setTab(t.id)}>{t.label}</button>)}
+      </div>
+
+      {tab==="leaderboard" && <>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(3,1fr)",gap:10,marginBottom:"1.25rem"}}>
+          {sorted.slice(0,3).map((p,i)=>(
+            <div key={p.name} style={{...css.card,marginBottom:0,textAlign:"center"}}>
+              <div style={{fontSize:22}}>{rank(i)}</div>
+              <div style={{fontWeight:500,fontSize:15,margin:"4px 0 2px"}}>{p.name}</div>
+              <div style={{fontSize:22,fontWeight:500,color:"var(--blue)"}}>{total(p)}</div>
+              <div style={{fontSize:11,color:"var(--text3)"}}>pts</div>
+            </div>
+          ))}
+        </div>
+        <div style={{overflowX:"auto"}}>
+          <table style={{width:"100%",borderCollapse:"collapse",fontSize:14}}>
+            <thead><tr>
+              <th style={css.th}>Rank</th>
+              <th style={css.th}>Name</th>
+              {DAYS.map(d=><th key={d} style={{...css.th,textAlign:"center"}}>{d}</th>)}
+              <th style={{...css.th,textAlign:"center"}}>Total</th>
+              <th style={css.th}></th>
+            </tr></thead>
+            <tbody>{sorted.map((p,i)=>(
+              <tr key={p.name}>
+                <td style={css.td}>{rank(i)}</td>
+                <td style={{...css.td,fontWeight:500}}>{p.name}</td>
+                {DAYS.map(d=>(
+                  <td key={d} style={{...css.td,textAlign:"center"}}>
+                    {editing===`${p.name}-${d}` ? (
+                      <select autoFocus style={{...css.input,width:60,padding:"2px 4px 2px 8px"}}
+                        value={p.points[d]} onChange={e=>setpts(p.name,d,Number(e.target.value))} onBlur={()=>setEditing(null)}>
+                        {PTS.map(v=><option key={v} value={v}>{v}</option>)}
+                      </select>
+                    ) : (
+                      <span onClick={()=>setEditing(`${p.name}-${d}`)} style={{cursor:"pointer",padding:"2px 8px",borderRadius:4,
+                        background:p.points[d]>0?"var(--blue-bg)":"transparent",
+                        color:p.points[d]>0?"var(--blue-text)":"var(--text3)"}}>
+                        {p.points[d]||"—"}
+                      </span>
+                    )}
+                  </td>
+                ))}
+                <td style={{...css.td,textAlign:"center",fontWeight:500}}>{total(p)}</td>
+                <td style={css.td}><button onClick={()=>remove(p.name)} style={{...css.btn,padding:"2px 8px",fontSize:11,color:"var(--coral)"}}>×</button></td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+        <div style={{display:"flex",gap:8,marginTop:"1rem",alignItems:"center"}}>
+          <input style={{...css.input,flex:1,width:"auto"}} placeholder="Add participant..." value={newName}
+            onChange={e=>setNewName(e.target.value)} onKeyDown={e=>e.key==="Enter"&&addPlayer()} />
+          <button style={css.btn} onClick={addPlayer}>Add</button>
+        </div>
+        <p style={{fontSize:12,color:"var(--text3)",marginTop:8}}>Click any score cell to edit. 10 pts base + 5 bonus per challenge.</p>
+      </>}
+
+      {tab==="challenges" && <>
+        <div style={{display:"flex",gap:8,marginBottom:"1.25rem",flexWrap:"wrap"}}>
+          {CHALLENGES.map((c,i)=><button key={i} style={css.tab(chalDay===i)} onClick={()=>setChalDay(i)}>{c.day}</button>)}
+        </div>
+        {(()=>{const c=CHALLENGES[chalDay]; return (<>
+          <div style={css.card}>
+            <div style={{display:"flex",gap:8,marginBottom:10,flexWrap:"wrap"}}>
+              <span style={css.badge("--green-bg","--green-text")}>Day {chalDay+1}</span>
+              <span style={css.badge("--blue-bg","--blue-text")}>Honor-system timer: {c.time}</span>
+              <span style={css.badge("--gray-bg","--gray-text")}>Submit by EOD your timezone</span>
+            </div>
+            <p style={{fontSize:18,fontWeight:500,margin:"0 0 10px"}}>{c.title}</p>
+            <p style={{fontSize:14,color:"var(--text2)",lineHeight:1.7,margin:"0 0 1rem"}}>{c.prompt}</p>
+            <div style={{borderTop:"0.5px solid var(--border)",paddingTop:12,display:"flex",flexDirection:"column",gap:8}}>
+              <div><span style={{...css.badge("--amber-bg","--amber-text"),marginRight:8}}>Points</span><span style={{fontSize:13,color:"var(--text2)"}}>{c.scoring}</span></div>
+              <div><span style={{...css.badge("--purple-bg","--purple-text"),marginRight:8}}>Tip</span><span style={{fontSize:13,color:"var(--text2)"}}>{c.tip}</span></div>
+            </div>
+          </div>
+          <div style={css.card2}>
+            <p style={{fontSize:13,fontWeight:500,marginBottom:8}}>How to run this challenge</p>
+            <ol style={{paddingLeft:"1.25rem",fontSize:13,color:"var(--text2)",lineHeight:1.9}}>
+              <li>Post the challenge prompt in Slack at the same time each morning (recommend 9am MT)</li>
+              <li>Participants set their own timer and work independently</li>
+              <li>They post results in the Slack thread before EOD in their timezone</li>
+              <li>You score async and update the leaderboard before the next day's challenge drops</li>
+            </ol>
+          </div>
+        </>)})()}
+      </>}
+
+      {tab==="awards" && <>
+        <p style={{fontSize:14,color:"var(--text2)",margin:"0 0 1rem",lineHeight:1.6}}>Awarded at the Friday closing ceremony. Everyone goes home with something.</p>
+        <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(220px,1fr))",gap:10}}>
+          {AWARDS.map(a=>(
+            <div key={a.id} style={{...css.card,marginBottom:0}}>
+              <div style={{fontSize:18,marginBottom:6,color:`var(${a.c})`}}>{a.icon}</div>
+              <p style={{fontSize:13,fontWeight:500,margin:"0 0 3px"}}>{a.label}</p>
+              <p style={{fontSize:12,color:"var(--text2)",margin:"0 0 10px",lineHeight:1.5}}>{a.desc}</p>
+              <select style={{...css.input,fontSize:12}} value={winners[a.id]||""} onChange={e=>setWinners(w=>({...w,[a.id]:e.target.value}))}>
+                <option value="">— pick winner —</option>
+                {players.map(p=><option key={p.name} value={p.name}>{p.name}</option>)}
+              </select>
+              {winners[a.id]&&<p style={{fontSize:12,fontWeight:500,margin:"6px 0 0",color:`var(${a.c})`}}>{winners[a.id]}</p>}
+            </div>
+          ))}
+        </div>
+        <p style={{fontSize:12,color:"var(--text3)",marginTop:"1rem"}}>"Showed Up & Shipped" goes to anyone who completed all 5 challenges — check the leaderboard for a 50+ point score with no zero days.</p>
+      </>}
+
+      {tab==="buildoff" && <>
+        <div style={css.card}>
+          <span style={css.badge("--amber-bg","--amber-text")}>Friday — synchronous midday</span>
+          <p style={{fontSize:18,fontWeight:500,margin:"10px 0 6px"}}>Build-Off Finals</p>
+          <p style={{fontSize:14,color:"var(--text2)",lineHeight:1.6,margin:"0 0 1rem"}}>
+            A live, synchronous 2-hour build held midday when everyone is available across timezones. Build anything you want using Claude Code — solo or in pairs. The only rule: it has to work.
+          </p>
+          <div style={{display:"grid",gridTemplateColumns:"repeat(auto-fill,minmax(200px,1fr))",gap:10}}>
+            {[["Format","2 hours, live and synchronous"],["Teams","Solo or pairs"],["Build anything","No constraints — your idea, your call"],["Award","Most Creative Build"]].map(([k,v])=>(
+              <div key={k} style={{background:"var(--bg3)",borderRadius:"var(--radius)",padding:"10px 12px"}}>
+                <p style={{fontSize:11,color:"var(--text3)",margin:"0 0 3px"}}>{k}</p>
+                <p style={{fontSize:13,margin:0,lineHeight:1.5}}>{v}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={css.card}>
+          <p style={{fontSize:14,fontWeight:500,margin:"0 0 10px"}}>Judging rubric</p>
+          {[["Ambition","Did they attempt something hard or interesting?"],["Claude Code usage","Did they really lean in, or just use it for autocomplete?"],["Works / ships","Does it run? Can you demo it right now?"],["Wow factor","Would you show this to someone outside the team?"]].map(([n,d])=>(
+            <div key={n} style={{display:"flex",gap:12,alignItems:"flex-start",marginBottom:10}}>
+              <span style={{...css.badge("--purple-bg","--purple-text"),marginTop:1}}>{n}</span>
+              <span style={{fontSize:13,color:"var(--text2)",lineHeight:1.5}}>{d}</span>
+            </div>
+          ))}
+        </div>
+        <div style={css.card2}>
+          <p style={{fontSize:13,fontWeight:500,marginBottom:8}}>Demo format — 5 min per team</p>
+          <ol style={{paddingLeft:"1.25rem",fontSize:13,color:"var(--text2)",lineHeight:1.9}}>
+            <li>What did you build? (30 sec)</li>
+            <li>Live demo — show it working (2 min)</li>
+            <li>Show one Claude Code moment that made a real difference (1 min)</li>
+            <li>What would you add with another hour? (30 sec)</li>
+          </ol>
+        </div>
+      </>}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+</body>
+</html>
