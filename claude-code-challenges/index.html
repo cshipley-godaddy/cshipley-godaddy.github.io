@@ -11,250 +11,178 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; b
   --bg: #ffffff; --bg2: #f5f4f0; --bg3: #eeedea;
   --text: #1a1a18; --text2: #5f5e5a; --text3: #9a9893;
   --border: rgba(0,0,0,0.09);
-  --blue: #185FA5; --blue-bg: #e6f1fb; --blue-text: #0c447c;
-  --green: #0f6e56; --green-bg: #e1f5ee; --green-text: #085041;
-  --amber: #854f0b; --amber-bg: #faeeda; --amber-text: #633806;
-  --purple: #534ab7; --purple-bg: #eeedfe; --purple-text: #3c3489;
-  --coral: #993c1d; --coral-bg: #faece7; --coral-text: #712b13;
-  --pink: #993556; --pink-bg: #fbeaf0; --pink-text: #72243e;
-  --gray: #5f5e5a; --gray-bg: #f1efe8; --gray-text: #444441;
   --r: 8px; --rl: 12px;
+  --mon: #c45c2a; --mon-bg: #faece7;
+  --tue: #185FA5; --tue-bg: #e6f1fb;
+  --wed: #0f6e56; --wed-bg: #e1f5ee;
+  --thu: #534ab7; --thu-bg: #eeedfe;
+  --fri: #993556; --fri-bg: #fbeaf0;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #1e1e1c; --bg2: #171715; --bg3: #2a2a28;
     --text: #f0efe8; --text2: #b4b2a9; --text3: #6a6966;
     --border: rgba(255,255,255,0.08);
-    --blue: #85b7eb; --blue-bg: #0c2a4a; --blue-text: #b5d4f4;
-    --green: #5dcaa5; --green-bg: #04342c; --green-text: #9fe1cb;
-    --amber: #ef9f27; --amber-bg: #412402; --amber-text: #fac775;
-    --purple: #afa9ec; --purple-bg: #26215c; --purple-text: #cecbf6;
-    --coral: #f0997b; --coral-bg: #4a1b0c; --coral-text: #f5c4b3;
-    --pink: #ed93b1; --pink-bg: #4b1528; --pink-text: #f4c0d1;
-    --gray: #b4b2a9; --gray-bg: #2c2c2a; --gray-text: #d3d1c7;
+    --mon: #f0997b; --mon-bg: #3a1508;
+    --tue: #85b7eb; --tue-bg: #0c2a4a;
+    --wed: #5dcaa5; --wed-bg: #04342c;
+    --thu: #afa9ec; --thu-bg: #26215c;
+    --fri: #ed93b1; --fri-bg: #4b1528;
   }
   body { background: var(--bg2); color: var(--text); }
 }
 
-.wrap { max-width: 720px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
+.top-bar { height: 4px; background: linear-gradient(to right, var(--mon), var(--tue), var(--wed), var(--thu), var(--fri)); }
 
-.hero { margin-bottom: 3rem; }
-.hero h1 { font-size: 36px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 8px; }
-.hero p { font-size: 16px; color: var(--text2); max-width: 520px; }
+.wrap { max-width: 680px; margin: 0 auto; padding: 3rem 1.25rem 5rem; }
 
-.section { margin-bottom: 3rem; }
-.section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 1rem; }
+.hero { margin-bottom: 2.5rem; }
+.hero h1 { font-size: 36px; font-weight: 500; letter-spacing: -0.5px; margin-bottom: 12px; }
+.hero p { font-size: 16px; color: var(--text2); line-height: 1.8; margin-bottom: 10px; }
 
-.card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 1.25rem; margin-bottom: 10px; }
-.card-muted { background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 1.25rem; margin-bottom: 10px; }
-
-.badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 9px; border-radius: var(--r); white-space: nowrap; }
-.b-green  { background: var(--green-bg);  color: var(--green-text);  }
-.b-blue   { background: var(--blue-bg);   color: var(--blue-text);   }
-.b-amber  { background: var(--amber-bg);  color: var(--amber-text);  }
-.b-purple { background: var(--purple-bg); color: var(--purple-text); }
-.b-coral  { background: var(--coral-bg);  color: var(--coral-text);  }
-.b-pink   { background: var(--pink-bg);   color: var(--pink-text);   }
-.b-gray   { background: var(--gray-bg);   color: var(--gray-text);   }
-
-.challenge-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-.challenge-title { font-size: 17px; font-weight: 500; }
-.challenge-body { font-size: 14px; color: var(--text2); line-height: 1.7; margin-bottom: 12px; }
-.challenge-meta { display: flex; flex-direction: column; gap: 7px; border-top: 0.5px solid var(--border); padding-top: 12px; }
-.meta-row { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text2); }
-.meta-row .badge { margin-top: 1px; flex-shrink: 0; }
-
-.awards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-.award-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 1rem; }
-.award-icon { font-size: 16px; margin-bottom: 6px; }
-.award-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
-.award-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
-
-.rubric-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; font-size: 14px; }
-.rubric-row .badge { margin-top: 2px; flex-shrink: 0; }
-.rubric-desc { color: var(--text2); line-height: 1.6; }
-
-.demo-steps { padding-left: 1.25rem; font-size: 14px; color: var(--text2); line-height: 2; }
+.rule-bar { border-left: 3px solid var(--thu); padding: 10px 16px; margin: 2rem 0 2.5rem; font-size: 15px; color: var(--text2); font-style: italic; }
 
 .divider { border: none; border-top: 0.5px solid var(--border); margin: 2.5rem 0; }
+.section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text3); margin-bottom: 1.25rem; }
 
-.how-list { padding-left: 1.25rem; font-size: 14px; color: var(--text2); line-height: 2; }
+.day { border-left: 3px solid; border-radius: 0 var(--rl) var(--rl) 0; padding: 1.1rem 1.25rem; margin-bottom: 12px; }
+.day-mon { border-color: var(--mon); background: var(--mon-bg); }
+.day-tue { border-color: var(--tue); background: var(--tue-bg); }
+.day-wed { border-color: var(--wed); background: var(--wed-bg); }
+.day-thu { border-color: var(--thu); background: var(--thu-bg); }
+.day-fri { border-color: var(--fri); background: var(--fri-bg); }
 
-.points-note { font-size: 13px; color: var(--text2); background: var(--bg3); border-radius: var(--r); padding: 10px 14px; margin-top: 10px; }
+.day-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+.day-name { font-size: 12px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.6; }
+.day-title { font-size: 20px; font-weight: 500; line-height: 1.3; }
+.day-body { font-size: 14px; color: var(--text2); line-height: 1.8; }
+
+.card  { background: var(--bg);  border: 0.5px solid var(--border); border-radius: var(--rl); padding: 1.25rem; margin-bottom: 10px; }
+.card2 { background: var(--bg3); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 1.25rem; margin-bottom: 10px; }
+
+.awards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.award-card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--rl); padding: 1rem; }
+.award-icon { font-size: 15px; margin-bottom: 6px; }
+.award-name { font-size: 13px; font-weight: 500; margin-bottom: 3px; }
+.award-desc { font-size: 12px; color: var(--text2); line-height: 1.5; }
 </style>
 </head>
 <body>
+
+<div class="top-bar"></div>
+
 <div class="wrap">
 
   <div class="hero">
     <h1>Claude Week</h1>
-    <p>Five days of hands-on challenges, a live build competition, and awards celebrating different kinds of excellence with Claude Code.</p>
+    <p>For five days, the IDE stays closed. Everything flows through Claude Code CLI — real sprint work, real deliverables, just a completely different way of getting there. Think of it less as an experiment and more as a week where you get to find out what this thing can actually do.</p>
+    <p>It'll feel weird on Monday. By Friday you'll have opinions.</p>
   </div>
 
-  <div class="section">
-    <div class="section-label">How it works</div>
-    <div class="card-muted">
-      <p style="font-size:14px;color:var(--text2);line-height:1.8;">Each morning a daily challenge drops in Slack. Set your own timer, do the work, and post your result in the thread before EOD your timezone. Challenges are designed to be short — the constraint is the point. By Friday you'll have five real outputs and a much sharper sense of what Claude Code can do in a focused window.</p>
+  <div class="rule-bar">
+    "If you're typing code, you're doing it wrong." — yes, really.
+  </div>
+
+  <hr class="divider">
+
+  <div class="section-label">The week</div>
+
+  <div class="day day-mon">
+    <div class="day-header">
+      <span class="day-name">Monday</span>
+      <span class="day-title">Stop commanding. Start planning.</span>
     </div>
-    <div class="points-note">
-      Points: <strong>10 base</strong> per challenge + <strong>5 bonus</strong> for nailing the extra credit. Scores are tracked on the leaderboard and feed into the awards at Friday's closing ceremony.
+    <p class="day-body">Before writing a single line, have a conversation. Use Plan Mode to think through architecture with Claude — let it push back on your ideas, ask questions you hadn't thought of, propose approaches you wouldn't have. Then hand off the entire git workflow too: commits, PRs, all of it. Your hands are going to feel very idle. That's fine.</p>
+  </div>
+
+  <div class="day day-tue">
+    <div class="day-header">
+      <span class="day-name">Tuesday</span>
+      <span class="day-title">What does Claude actually know?</span>
+    </div>
+    <p class="day-body">The quality of Claude's output is directly proportional to the quality of context you give it. Today is about getting deliberate with that — trimming your CLAUDE.md to what actually matters, working from Figma screenshots as the source of truth, and learning to give Claude exactly the right information at exactly the right moment. You'll also run /insights today for the first time, which shows you your own usage patterns. Consider it your baseline.</p>
+  </div>
+
+  <div class="day day-wed">
+    <div class="day-header">
+      <span class="day-name">Wednesday</span>
+      <span class="day-title">Close the loop.</span>
+    </div>
+    <p class="day-body">Claude writes it, Playwright verifies it visually, PR feedback comes in, Claude addresses it. Today is about running a full cycle — from implementation to reviewed, merged PR — without touching the IDE once. Where does the loop hold? Where does it break down?</p>
+  </div>
+
+  <div class="day day-thu">
+    <div class="day-header">
+      <span class="day-name">Thursday</span>
+      <span class="day-title">What keeps coming up?</span>
+    </div>
+    <p class="day-body">By now you've probably repeated a few workflows enough times to notice them. Today is about going further: sub-agents handling parallel work, and — for those ready — building custom skills for the patterns worth automating. Ask Claude to explain how it did something, not just what it did.</p>
+  </div>
+
+  <div class="day day-fri">
+    <div class="day-header">
+      <span class="day-name">Friday</span>
+      <span class="day-title">Put it all together.</span>
+    </div>
+    <p class="day-body">Finish the sprint. Then run /insights one more time and actually compare it to Tuesday's baseline — you'll have real data on how your patterns shifted across the week. The afternoon ends with the showcase: a live demo of the best thing you built.</p>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">Friday showcase</div>
+    <div class="card">
+      <p style="font-size:18px;font-weight:500;margin-bottom:8px;">Demo the most interesting thing you built this week.</p>
+      <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:1.25rem;">Five minutes, live, with the whole team. Show what you made, show one moment where Claude genuinely surprised you, and tell us what you'd do differently. No slides required. No polish required. Just show the thing.</p>
+      <p style="font-size:13px;color:var(--text3);">Anything goes.</p>
     </div>
   </div>
 
   <hr class="divider">
 
-  <div class="section">
-    <div class="section-label">Daily Challenges</div>
-
-    <div class="card">
-      <div class="challenge-header">
-        <span class="badge b-gray">Monday</span>
-        <span class="challenge-title">The Refactor Sprint</span>
-      </div>
-      <p class="challenge-body">Pick a messy function from your codebase. Use Claude Code to refactor it for readability and performance and add JSDoc. Post your before/after diff in the Slack thread.</p>
-      <div class="challenge-meta">
-        <div class="meta-row"><span class="badge b-blue">Timer: 15 min</span> The time limit isn't a hard rule — it's a prompt to show how far you can get quickly. Stop when it goes off and post what you have.</div>
-        <div class="meta-row"><span class="badge b-amber">+5 bonus</span> If it also generates passing tests.</div>
-        <div class="meta-row"><span class="badge b-purple">Tip</span> Drop the whole file and let Claude find the worst offender.</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="challenge-header">
-        <span class="badge b-gray">Tuesday</span>
-        <span class="challenge-title">The Bug Hunt</span>
-      </div>
-      <p class="challenge-body">Paste a broken snippet or failing test into Claude Code. Get it working and post your fix along with a one-line explanation of the root cause.</p>
-      <div class="challenge-meta">
-        <div class="meta-row"><span class="badge b-blue">Timer: 10 min</span> Short on purpose — debugging with Claude Code is fast when you let it lead.</div>
-        <div class="meta-row"><span class="badge b-amber">+5 bonus</span> If Claude's root cause explanation is clear enough to drop straight into a PR comment.</div>
-        <div class="meta-row"><span class="badge b-purple">Tip</span> Ask Claude to explain why before asking it to fix.</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="challenge-header">
-        <span class="badge b-gray">Wednesday</span>
-        <span class="challenge-title">The Docs Writer</span>
-      </div>
-      <p class="challenge-body">Pick any undocumented function or module. Use Claude Code to generate a README section or inline docs. Post the output.</p>
-      <div class="challenge-meta">
-        <div class="meta-row"><span class="badge b-blue">Timer: 10 min</span></div>
-        <div class="meta-row"><span class="badge b-amber">+5 bonus</span> If it includes a working usage example.</div>
-        <div class="meta-row"><span class="badge b-purple">Tip</span> Tell Claude who the audience is — "write this for a new engineer joining the team."</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="challenge-header">
-        <span class="badge b-gray">Thursday</span>
-        <span class="challenge-title">The CLI Wizard</span>
-      </div>
-      <p class="challenge-body">Build a small CLI tool or script using Claude Code — anything that saves you or your team real time. It must run. Share what it does and show it working.</p>
-      <div class="challenge-meta">
-        <div class="meta-row"><span class="badge b-blue">Timer: 20 min</span> A little more room — you're building something from scratch.</div>
-        <div class="meta-row"><span class="badge b-amber">+5 bonus</span> For creative use of Claude Code slash commands.</div>
-        <div class="meta-row"><span class="badge b-purple">Tip</span> Start with "I want a script that…" and iterate from there.</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="challenge-header">
-        <span class="badge b-gray">Friday</span>
-        <span class="challenge-title">The Prompt Surgeon</span>
-      </div>
-      <p class="challenge-body">Find a prompt that gave you a mediocre result this week. Iterate on it live until Claude Code nails it. Document every iteration and post the full arc.</p>
-      <div class="challenge-meta">
-        <div class="meta-row"><span class="badge b-blue">Timer: 15 min</span></div>
-        <div class="meta-row"><span class="badge b-amber">+5 bonus</span> If the final result is genuinely impressive.</div>
-        <div class="meta-row"><span class="badge b-purple">Tip</span> The messier your starting prompt, the better the story.</div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <div class="section">
-    <div class="section-label">Build-Off Finals — Friday midday</div>
-    <div class="card">
-      <p style="font-size:16px;font-weight:500;margin-bottom:8px;">Two hours. Build anything. Make it work.</p>
-      <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:1rem;">A live synchronous session held midday Friday when everyone is available. Solo or pairs. No constraints on what you build — the only rule is that it has to run. This is your chance to put the whole week together and make something real.</p>
-      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:1rem;">
-        <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;">
-          <p style="font-size:11px;color:var(--text3);margin-bottom:3px;">Format</p>
-          <p style="font-size:13px;">2 hours, live</p>
-        </div>
-        <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;">
-          <p style="font-size:11px;color:var(--text3);margin-bottom:3px;">Teams</p>
-          <p style="font-size:13px;">Solo or pairs</p>
-        </div>
-        <div style="background:var(--bg3);border-radius:var(--r);padding:10px 12px;">
-          <p style="font-size:11px;color:var(--text3);margin-bottom:3px;">Build</p>
-          <p style="font-size:13px;">Anything — your call</p>
-        </div>
-      </div>
-      <p style="font-size:13px;font-weight:500;margin-bottom:10px;">Judged on</p>
-      <div class="rubric-row"><span class="badge b-purple">Ambition</span><span class="rubric-desc">Did you attempt something hard or interesting?</span></div>
-      <div class="rubric-row"><span class="badge b-purple">Claude Code usage</span><span class="rubric-desc">Did you really lean in, or just use it for autocomplete?</span></div>
-      <div class="rubric-row"><span class="badge b-purple">Ships</span><span class="rubric-desc">Does it run? Can you demo it right now?</span></div>
-      <div class="rubric-row"><span class="badge b-purple">Wow factor</span><span class="rubric-desc">Would you show this to someone outside the team?</span></div>
-    </div>
-    <div class="card-muted">
-      <p style="font-size:13px;font-weight:500;margin-bottom:8px;">Demo format — 5 min per team</p>
-      <ol class="demo-steps">
-        <li>What did you build? <span style="color:var(--text3)">(30 sec)</span></li>
-        <li>Live demo — show it working <span style="color:var(--text3)">(2 min)</span></li>
-        <li>One Claude Code moment that made a real difference <span style="color:var(--text3)">(1 min)</span></li>
-        <li>What would you add with another hour? <span style="color:var(--text3)">(30 sec)</span></li>
-      </ol>
-    </div>
-  </div>
-
-  <hr class="divider">
-
-  <div class="section">
-    <div class="section-label">Awards — Friday closing ceremony</div>
-    <p style="font-size:14px;color:var(--text2);margin-bottom:1rem;line-height:1.7;">Awards recognize different kinds of excellence across the week — the best prompt isn't always the same person as the best build, and neither is the same person as the one who improved the most.</p>
+  <div>
+    <div class="section-label">Closing ceremony awards</div>
+    <p style="font-size:14px;color:var(--text2);margin-bottom:1.25rem;line-height:1.7;">Awards recognize different kinds of excellence across the week. The best prompt isn't always the same person as the best build, and the biggest improvement often comes from someone who started the week most skeptical.</p>
     <div class="awards-grid">
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--purple)">✦</div>
+      <div class="award-card" style="border-left:3px solid var(--thu);">
+        <div class="award-icon" style="color:var(--thu)">✦</div>
         <div class="award-name">Most Elegant Prompt</div>
         <div class="award-desc">Clean, precise, gets it right first try</div>
       </div>
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--green)">◈</div>
+      <div class="award-card" style="border-left:3px solid var(--wed);">
+        <div class="award-icon" style="color:var(--wed)">◈</div>
         <div class="award-name">Most Unexpected Use</div>
         <div class="award-desc">Nobody saw that coming</div>
       </div>
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--blue)">◷</div>
+      <div class="award-card" style="border-left:3px solid var(--tue);">
+        <div class="award-icon" style="color:var(--tue)">◷</div>
         <div class="award-name">Most Time Saved</div>
         <div class="award-desc">Biggest productivity unlock of the week</div>
       </div>
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--coral)">◆</div>
-        <div class="award-name">Most Creative Build</div>
-        <div class="award-desc">Best Build-Off Finals project</div>
+      <div class="award-card" style="border-left:3px solid var(--mon);">
+        <div class="award-icon" style="color:var(--mon)">◆</div>
+        <div class="award-name">Best Showcase</div>
+        <div class="award-desc">Most impressive Friday demo</div>
       </div>
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--amber)">★</div>
+      <div class="award-card" style="border-left:3px solid #854f0b;">
+        <div class="award-icon" style="color:#854f0b">★</div>
         <div class="award-name">Claude Week MVP</div>
-        <div class="award-desc">Top performer on the leaderboard</div>
+        <div class="award-desc">Showed up every day and pushed the hardest</div>
       </div>
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--green)">↑</div>
+      <div class="award-card" style="border-left:3px solid var(--wed);">
+        <div class="award-icon" style="color:var(--wed)">↑</div>
         <div class="award-name">Glow Up Award</div>
-        <div class="award-desc">Most improved from day 1 to day 5</div>
+        <div class="award-desc">Most growth from day 1 to day 5</div>
       </div>
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--pink)">⌘</div>
+      <div class="award-card" style="border-left:3px solid var(--fri);">
+        <div class="award-icon" style="color:var(--fri)">⌘</div>
         <div class="award-name">The Promptist</div>
         <div class="award-desc">Consistently sharp prompting craft all week</div>
       </div>
-      <div class="award-card">
-        <div class="award-icon" style="color:var(--gray)">◉</div>
+      <div class="award-card" style="border-left:3px solid var(--text3);">
+        <div class="award-icon" style="color:var(--text3)">◉</div>
         <div class="award-name">Showed Up & Shipped</div>
-        <div class="award-desc">Completed all five daily challenges</div>
+        <div class="award-desc">Brought something to every sharing session</div>
       </div>
     </div>
   </div>
